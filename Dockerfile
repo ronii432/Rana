@@ -21,5 +21,8 @@ RUN pip install -r requirements.txt
 # Set execute permissions
 RUN chmod +x rohit
 
-# Command to run your Python script
-CMD ["python3", "rohit.py", "192.168.0.1", "12345", "60", "4"]
+# Install gunicorn
+RUN pip install gunicorn
+
+# Command to run your Python script with gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "rohit:app"]
