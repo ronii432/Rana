@@ -7,6 +7,6 @@ services:
     startCommand: "python rohit.py"
     envVars:
       - key: TELEGRAM_BOT_TOKEN
-        value: <7776000937:AAHKMHSG3ufl65CUuVQ4ioxGijx1hBj9tqA>
+        value: "7776000937:AAHKMHSG3ufl65CUuVQ4ioxGijx1hBj9tqA"
     ports:
       - 5000
