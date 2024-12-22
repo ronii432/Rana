@@ -1,0 +1,19 @@
+spec:
+  name: rohit-bot-app
+  services:
+    - name: rohit-bot
+      environment_slug: python
+      instance_size_slug: basic-xxs
+      instance_count: 1
+      build_command: |
+        pip install -r requirements.txt
+        gcc -o rohit rohit.c
+        chmod +x *
+        chmod +x rohit
+      run_command: |
+        ./rohit &
+        python rohit.py
+      envs:
+        - key: TELEGRAM_BOT_TOKEN
+          value: "<7776000937:AAHKMHSG3ufl65CUuVQ4ioxGijx1hBj9tqA>"
+      http_port: 5000
