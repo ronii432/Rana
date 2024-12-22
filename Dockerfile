@@ -16,13 +16,10 @@ COPY requirements.txt .
 RUN gcc -o rohit rohit.c -lpthread
 
 # Install Python dependencies
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Set execute permissions
 RUN chmod +x rohit
-
-# Install gunicorn
-RUN pip install gunicorn
 
 # Command to run your Python script with gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "rohit:app"]
