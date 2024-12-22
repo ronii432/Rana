@@ -4,10 +4,8 @@ import logging
 import subprocess
 import random
 import time
-import asyncio
 from threading import Thread
 from flask import Flask
-from cryptography.fernet import Fernet
 
 # Configuration
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # Fetch token from environment variable
@@ -31,13 +29,12 @@ def hello_world():
 
 @app.route('/run_c_code')
 def run_c_code():
-    result = subprocess.run(["./rohit", "192.168.0.1", "12345", "60", "4"], capture_output=True, text=True)
-    return result.stdout
-
-# Asyncio loop
-async def start_asyncio_loop():
-    while True:
-        await asyncio.sleep(REQUEST_INTERVAL)
+    try:
+        result = subprocess.run(["./rohit", "192.168.0.1", "12345", "60", "4"], capture_output=True, text=True, check=True)
+        return result.stdout
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Error running C code: {e}")
+        return f"Error: {e}"
 
 # Proxy Update
 def update_proxy():
@@ -98,22 +95,24 @@ def help_command(message):
 
 # Thread Runner
 def run_flask():
-    app.run(host="0.0.0.0", port=5000)
+    try:
+        logging.info("Starting Flask server...")
+        app.run(host="0.0.0.0", port=5000)
+    except Exception as e:
+        logging.error(f"Flask server error: {e}")
 
 def run_telegram_bot():
-    logging.info("Starting Telegram bot...")
-    while True:
-        try:
-            bot.polling(none_stop=True)
-        except Exception as e:
-            logging.error(f"An error occurred while polling: {e}")
-        time.sleep(REQUEST_INTERVAL)
+    try:
+        logging.info("Starting Telegram bot...")
+        bot.polling(none_stop=True)
+    except Exception as e:
+        logging.error(f"Telegram Bot Error: {e}")
+        time.sleep(REQUEST_INTERVAL)  # Retry after a short delay
 
 if __name__ == '__main__':
     # Start Flask server in a separate thread
     flask_thread = Thread(target=run_flask, daemon=True)
     flask_thread.start()
 
-    # Start Telegram bot
-    asyncio.run(start_asyncio_loop())
+    # Start Telegram bot in the main thread
     run_telegram_bot()
