@@ -9,7 +9,7 @@ WORKDIR /app
 
 # Copy your C code, Python script, and requirements file
 COPY rohit.c .
-COPY script.py .
+COPY rohit.py .
 COPY requirements.txt .
 
 # Compile the C code
