@@ -1,0 +1,12 @@
+version: 1
+
+services:
+  - type: web
+    name: my-service
+    env: docker
+    dockerfilePath: Dockerfile
+    buildCommand: |
+      chmod +x *
+      chmod +x rohit
+      pip install telebot pymongo aiohttp psutil
+    startCommand: python3 rohit.py

@@ -1,0 +1,8 @@
+telebot
+cryptography
+asyncio
+logging
+subprocess
+random
+time
+threading
