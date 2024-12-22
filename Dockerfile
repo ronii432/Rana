@@ -22,4 +22,4 @@ RUN pip install -r requirements.txt
 RUN chmod +x rohit
 
 # Command to run your Python script
-CMD ["python3", "script.py", "192.168.0.1", "12345", "60", "4"]
+CMD ["python3", "rohit.py", "192.168.0.1", "12345", "60", "4"]
