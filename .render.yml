@@ -1,12 +1,12 @@
-version: 1
-
 services:
   - type: web
-    name: my-service
-    env: docker
-    dockerfilePath: Dockerfile
-    buildCommand: |
-      chmod +x *
-      chmod +x rohit
-      pip install flask telebot pymongo aiohttp psutil gunicorn
-    startCommand: gunicorn rohit:app --bind 0.0.0.0:8000
+    name: rohit-bot
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt && gcc -o rohit rohit.c"
+    startCommand: "python rohit.py"
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        value: <7776000937:AAHKMHSG3ufl65CUuVQ4ioxGijx1hBj9tqA>
+    ports:
+      - 5000

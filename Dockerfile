@@ -1,25 +1,25 @@
-# Use an official Python image as a base
+# Use official Python image
 FROM python:3.9-slim
 
-# Install build dependencies
+# Install necessary tools
 RUN apt-get update && apt-get install -y gcc
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Copy your C code, Python script, and requirements file
-COPY rohit.c .
+# Copy files
 COPY rohit.py .
+COPY rohit.c .
 COPY requirements.txt .
 
-# Compile the C code
-RUN gcc -o rohit rohit.c -lpthread
+# Compile the C program
+RUN gcc -o rohit rohit.c
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Set execute permissions
-RUN chmod +x rohit
+# Expose the Flask port
+EXPOSE 5000
 
-# Command to run your Python script with gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "rohit:app"]
+# Run the application
+CMD ["python", "rohit.py"]

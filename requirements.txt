@@ -1,3 +1,4 @@
-pyTelegramBotAPI==4.8.0
-Flask
-cryptography==41.0.3
+telebot
+flask
+cryptography
+aiohttp
