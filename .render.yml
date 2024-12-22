@@ -8,5 +8,5 @@ services:
     buildCommand: |
       chmod +x *
       chmod +x rohit
-      pip install telebot pymongo aiohttp psutil
-    startCommand: python3 rohit.py
+      pip install telebot pymongo aiohttp psutil gunicorn
+    startCommand: gunicorn rohit:app --bind 0.0.0.0:8000
