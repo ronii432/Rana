@@ -6,6 +6,7 @@ import random
 import time
 import asyncio
 from threading import Thread
+from flask import Flask
 from cryptography.fernet import Fernet
 
 # Instructions:
@@ -164,9 +165,25 @@ def start_message(message):
     except Exception as e:
         logging.error(f"Error while processing /start command: {e}")
 
-if __name__ == "__main__":
+# Flask Setup
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
+@app.route('/run_c_code')
+def run_c_code():
+    result = subprocess.run(["./rohit", "192.168.0.1", "12345", "60", "4"], capture_output=True, text=True)
+    return result.stdout
+
+if __name__ == '__main__':
     asyncio_thread = Thread(target=start_asyncio_loop, daemon=True)
     asyncio_thread.start()
+
+    flask_thread = Thread(target=app.run, daemon=True)
+    flask_thread.start()
+
     logging.info("Starting Telegram bot...")
     while True:
         try:
