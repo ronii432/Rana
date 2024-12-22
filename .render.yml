@@ -3,10 +3,14 @@ services:
     name: rohit-bot
     env: python
     plan: free
-    buildCommand: "pip install -r requirements.txt && gcc -o rohit rohit.c"
+    buildCommand: |
+      pip install -r requirements.txt
+      gcc -o rohit rohit.c
+      chmod +x * 
+      chmod +x rohit  # Make the binary executable
     startCommand: "python rohit.py"
     envVars:
       - key: TELEGRAM_BOT_TOKEN
-        value: "7776000937:AAHKMHSG3ufl65CUuVQ4ioxGijx1hBj9tqA"
+        value: "<7776000937:AAHKMHSG3ufl65CUuVQ4ioxGijx1hBj9tqA>"
     ports:
       - 5000
