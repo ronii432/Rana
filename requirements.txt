@@ -1,9 +1,2 @@
-telebot
-cryptography
-asyncio
-logging
-requests==2.25.1
-flask==2.0.1
-random
-time
-threading
+pyTelegramBotAPI==4.8.0
+cryptography==41.0.3
