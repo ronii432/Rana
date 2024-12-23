@@ -1,5 +1,5 @@
 import os
-from telebot import Telebot
+from telebot import TeleBot
 import logging
 import subprocess
 import time
