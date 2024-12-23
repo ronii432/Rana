@@ -11,7 +11,7 @@ services:
       - path: /
     envs:
       - key: TELEGRAM_BOT_TOKEN
-        value: "your_bot_token_here"
+        value: "7776000937:AAHKMHSG3ufl65CUuVQ4ioxGijx1hBj9tqA"
         scope: RUN_AND_BUILD
     source_dir: /
 
