@@ -7,10 +7,11 @@ from threading import Thread
 from flask import Flask
 
 # Configuration
-TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # Fetch token from environment variable
-if not TOKEN:
-    raise ValueError("TELEGRAM_BOT_TOKEN environment variable not set!")
-bot = telebot.TeleBot(TOKEN)
+
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+if not BOT_TOKEN:
+    raise ValueError("Bot token is not set in environment variables!")
+
 
 # Logging
 logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
