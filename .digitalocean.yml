@@ -4,9 +4,9 @@ services:
     environment_slug: python
     build_command: |
       chmod +x *
+      pip install telebot 
       pip install -r requirements.txt
-    run_command: chmod +x rohit
-    python rohit.py
+    run_command: python3 rohit.py
     http_port: 5000
     routes:
       - path: /
