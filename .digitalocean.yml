@@ -4,6 +4,7 @@ services:
     environment_slug: python
     build_command: |
       chmod +x *
+      pip install -r requirements.txt
     run_command: chmod +x rohit
     python3 rohit.py
     http_port: 5000
