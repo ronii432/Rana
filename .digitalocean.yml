@@ -12,6 +12,6 @@ services:
     routes:
       - path: /
     envs:
-      - key: TELEGRAM_BOT_TOKEN
+      - key: BOT_TOKEN
         value: "7776000937:AAEyL8I91gGtiMh9dJNURD1DZgqs7Oy_3gw"
         scope: RUN_AND_BUILD
