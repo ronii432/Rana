@@ -11,7 +11,7 @@ from flask import Flask
 
 
 # Fetch token from the environment
-TOKEN = os.getenv("TELEBOT_TOKEN")
+TOKEN = os.getenv("BOT_TOKEN")
 if not TOKEN:
     raise ValueError("Bot token is not set in environment")
 
