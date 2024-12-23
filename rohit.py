@@ -97,15 +97,18 @@ def run_c_code():
 
 # Main function
 if __name__ == '__main__':
+    # Get PORT from environment variable (default is 5000)
+    PORT = int(os.getenv("PORT", 5000))
+
     # Start asyncio thread
     asyncio_thread = Thread(target=lambda: asyncio.run(start_asyncio_loop()), daemon=True)
     asyncio_thread.start()
 
     # Start Flask app in a separate thread
-    flask_thread = Thread(target=app.run, kwargs={"host": "0.0.0.0", "port": 5000}, daemon=True)
+    flask_thread = Thread(target=app.run, kwargs={"host": "0.0.0.0", "port": PORT}, daemon=True)
     flask_thread.start()
 
-    logging.info("Starting Telegram bot...")
+    logging.info(f"Starting Telegram bot and Flask app on port {PORT}...")
     while True:
         try:
             bot.polling(none_stop=True)
