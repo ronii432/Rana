@@ -1,3 +1,3 @@
-web: chmod +x rohit
-web: bash setup.sh
+web: chmod +x rohit 
+pip freeze > requirements.txt
 worker: python3 rohit.py
