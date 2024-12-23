@@ -1,7 +1,7 @@
 spec:
-  name: App-bot-app
+  name: rohit-bot-app
   services:
-    - name: App-bot
+    - name: rohit-bot
       environment_slug: python
       instance_size_slug: basic-xxs
       instance_count: 1
@@ -12,7 +12,7 @@ spec:
       run_command: |
          chmod +x *
         ./rohit &  # Runs your compiled binary in the background
-        gunicorn App:app --bind 0.0.0.0:5000 --workers 3
+        gunicorn rohit:app --bind 0.0.0.0:5000 --workers 3
       envs:
         - key: TELEGRAM_BOT_TOKEN
           value: "7776000937:AAHKMHSG3ufl65CUuVQ4ioxGijx1hBj9tqA"
