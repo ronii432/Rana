@@ -1,1 +1,2 @@
-worker: python3 rohit.py
+web: chmod +x rohit
+worker: python rohit.py
