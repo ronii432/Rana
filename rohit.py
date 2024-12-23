@@ -1,5 +1,5 @@
 import os
-import telebot
+from telebot import Telebot
 import logging
 import subprocess
 import time
@@ -8,9 +8,14 @@ from flask import Flask
 
 # Configuration
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-if not BOT_TOKEN:
-    raise ValueError("Bot token is not set in environment variables!")
+
+
+# Fetch token from the environment
+TOKEN = os.getenv("TELEBOT_TOKEN")
+if not TOKEN:
+    raise ValueError("Bot token is not set in environment")
+
+bot = TeleBot(TOKEN)
 
 
 # Logging
