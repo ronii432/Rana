@@ -1,19 +1,17 @@
-spec:
-  name: rohit-bot-app
-  services:
-    - name: rohit-bot
-      environment_slug: python
-      instance_size_slug: basic-xxs
-      instance_count: 1
-      build_command: |
-        pip install -r requirements.txt
-        gcc -o rohit rohit.c
-        chmod +x rohit
-      run_command: |
-         chmod +x *
-        ./rohit &  # Runs your compiled binary in the background
-        gunicorn rohit:app --bind 0.0.0.0:5000 --workers 3
-      envs:
-        - key: TELEGRAM_BOT_TOKEN
-          value: "7776000937:AAHKMHSG3ufl65CUuVQ4ioxGijx1hBj9tqA"
-      http_port: 8080
+name: rohit-project
+services:
+  - name: rohit-bot-service
+    environment_slug: python
+    build_command: |
+      chmod +x build.sh && ./build.sh
+    run_command: |
+      gunicorn rohit:app --bind 0.0.0.0:5000
+    http_port: 5000
+    routes:
+      - path: /
+    envs:
+      - key: TELEGRAM_BOT_TOKEN
+        value: "your_bot_token_here"
+        scope: RUN_AND_BUILD
+    source_dir: /
+
