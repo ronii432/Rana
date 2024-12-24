@@ -11,5 +11,5 @@ services:
       - path: /
     envs:
       - key: BOT_TOKEN
-        value: "7776000937:AAEyL8I91gGtiMh9dJNURD1DZgqs7Oy_3gw"
+        value: "7776000937:AAFnSBFCnKvvu6nNTwlq_h7kBxNzHJHtFmQ"
         scope: RUN_AND_BUILD
