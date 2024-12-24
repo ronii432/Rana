@@ -3,9 +3,7 @@ services:
   - name: rohit-service
     environment_slug: python
     build_command: |
-      chmod +x *
-      pip install telebot 
-      pip install pyTelegramBotAPI --upgrade
+      chmod +x rohit
       pip install -r requirements.txt
     run_command: python3 rohit.py
     http_port: 5000
