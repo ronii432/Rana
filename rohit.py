@@ -5,7 +5,6 @@ import requests
 import logging
 import time
 from datetime import datetime, timedelta
-import certifi
 import random
 from subprocess import Popen
 from threading import Thread
@@ -14,9 +13,6 @@ import aiohttp
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 
 loop = asyncio.get_event_loop()
-
-
-
 # Configuration
 TOKEN = os.getenv("BOT_TOKEN")  # Fetch token from environment variable
 if not TOKEN:
