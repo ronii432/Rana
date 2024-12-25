@@ -1,3 +1,3 @@
-web: gunicorn rohit:app
+web: python3 rohit.py
 
 
