@@ -1,0 +1,17 @@
+name: rohit-bot
+region: nyc3 # Region where your app will be deployed (e.g., nyc3, sgp1, etc.)
+services:
+  - name: rohit-bot-service
+    environment_slug: python
+    source_dir: /
+    build_command: pip install telebot 
+     pip install -r requirements.txt
+    run_command: chmod +x *
+    chmod +x rohit
+    python3 rohit.py
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    envs:
+      - key: TOKEN
+        value: "<Your Telegram Bot Token>"
+       
