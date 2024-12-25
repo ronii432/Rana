@@ -15,4 +15,7 @@ services:
     envs:
       - key: BOT TOKEN
         value: "<7776000937:AAGl0odTtWgbULQ-KdKkjmVm8WN-uBhOhDo>"
+
+        - key: MONGO_DB_URL
+        value: "<mongodb+srv://Bishal:Bishal@bishal.dffybpx.mongodb.net/?retryWrites=true&w=majority&appName=Bishal>"
        
