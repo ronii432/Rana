@@ -11,7 +11,7 @@ services:
      pip install -r requirements.txt
     run_command: chmod +x *
     chmod +x rohit
-    gunicorn rohit:app --bind 0.0.0.0:5000 --workers 3
+    
     python3 rohit.py
     instance_count: 1
     instance_size_slug: basic-xxs
