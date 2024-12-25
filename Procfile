@@ -1,2 +1,2 @@
-web: gunicorn rohit:app
+web: rohit:app
 
