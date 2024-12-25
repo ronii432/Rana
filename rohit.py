@@ -5,6 +5,7 @@ import requests
 import logging
 import time
 from datetime import datetime, timedelta
+import certifi
 import random
 from subprocess import Popen
 from threading import Thread
@@ -13,14 +14,28 @@ import aiohttp
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 
 loop = asyncio.get_event_loop()
+
+
+
 # Configuration
 TOKEN = os.getenv("BOT_TOKEN")  # Fetch token from environment variable
 if not TOKEN:
     raise ValueError("BOT_TOKEN environment variable not set!")
     
-FORWARD_CHANNEL_ID = -1002241427670
-CHANNEL_ID = -1002241427670
-error_channel_id = -1002241427670
+  # Configuration
+MONGO_DB_URL = os.getenv("MONGO_DB_URL")  # MongoDB URL environment variable se fetch karein
+
+if not MONGO_DB_URL:
+    raise ValueError("MONGO_DB_URL environment variable not set!")
+  
+    
+ client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
+db = client['zoya']
+users_collection = db.users
+   
+FORWARD_CHANNEL_ID = -1002188746287
+CHANNEL_ID = -1002188746287
+error_channel_id = -1002188746287
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
