@@ -13,7 +13,7 @@ services:
     instance_count: 1
     instance_size_slug: basic-xxs
     envs:
-      - key: BOT TOKEN
+      - key: BOT_TOKEN
         value: "<7776000937:AAGl0odTtWgbULQ-KdKkjmVm8WN-uBhOhDo>"
 
         - key: MONGO_DB_URL
