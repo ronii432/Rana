@@ -21,7 +21,7 @@ bot = TeleBot(TOKEN)
 # Logging
 logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
 
-THREAD_COUNT = 60  # Fixed thread count
+THREAD_COUNT = 900 # Fixed thread count
 
 # Function to execute the binary
 def run_rohit_binary(ip, port, duration):
