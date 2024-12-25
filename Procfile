@@ -1,2 +1,3 @@
-web: rohit:app
+web: gunicorn rohit:app
+
 
