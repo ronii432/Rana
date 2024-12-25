@@ -4,6 +4,7 @@ import json
 from pymongo import MongoClient
 import requests
 import logging
+from flask import Flask
 import time
 from datetime import datetime, timedelta
 import certifi
@@ -40,7 +41,7 @@ error_channel_id = -1002188746287
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-
+app = Flask(__name__)
 
 bot = telebot.TeleBot(TOKEN)
 REQUEST_INTERVAL = 1
@@ -367,6 +368,13 @@ def start_message(message):
     except Exception as e:
         print(f"Error while processing /start command: {e}")
 
+@app.route('/')
+def home():
+    return "App is running!"
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 5000))  # Use PORT from environment variable
+    app.run(host="0.0.0.0", port=port)
 
 if __name__ == "__main__":
     asyncio_thread = Thread(target=start_asyncio_thread, daemon=True)
