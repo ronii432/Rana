@@ -373,7 +373,7 @@ def home():
     return "App is running!"
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 5000))  # Use PORT from environment variable
+    port = int(os.getenv("PORT", 5001))  # Use PORT from environment variable
     app.run(host="0.0.0.0", port=port)
 
 if __name__ == "__main__":
