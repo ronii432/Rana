@@ -12,6 +12,6 @@ services:
     instance_count: 1
     instance_size_slug: basic-xxs
     envs:
-      - key: TOKEN
-        value: "<Your Telegram Bot Token>"
+      - key: BOT TOKEN
+        value: "<7776000937:AAGl0odTtWgbULQ-KdKkjmVm8WN-uBhOhDo>"
        
