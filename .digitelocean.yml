@@ -4,7 +4,9 @@ services:
   - name: rohit-bot-service
     environment_slug: python
     source_dir: /
-    build_command: pip install aiohttp
+    build_command: pip install --upgrade aiohttp telebot
+
+    pip install aiohttp
     pip install telebot 
      pip install -r requirements.txt
     run_command: chmod +x *
