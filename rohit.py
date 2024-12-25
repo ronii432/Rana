@@ -74,7 +74,7 @@ def hello_world():
 # Main function
 if __name__ == '__main__':
     # Start Flask app in a separate thread
-    flask_thread = Thread(target=app.run, kwargs={"host": "0.0.0.0", "port": 5000}, daemon=True)
+    flask_thread = Thread(target=app.run, kwargs={"host": "0.0.0.0", "port": 8000}, daemon=True)
     flask_thread.start()
 
     logging.info("Starting Telegram bot...")
