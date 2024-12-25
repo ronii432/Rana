@@ -16,7 +16,7 @@ services:
     instance_size_slug: basic-xxs
     envs:
       - key: BOT_TOKEN
-        value: "<7776000937:AAGl0odTtWgbULQ-KdKkjmVm8WN-uBhOhDo>"
+        value: "<7776000937:AAEQvf7EAvkJrYmMm-CJJBZ81wsDATRzbA8>"
 
         - key: MONGO_URL
         value: "<mongodb+srv://Bishal:Bishal@bishal.dffybpx.mongodb.net/?retryWrites=true&w=majority&appName=Bishal>"
