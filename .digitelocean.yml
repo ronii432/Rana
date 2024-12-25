@@ -21,4 +21,4 @@ services:
 
         - key: MONGO_URL
         value: "<mongodb+srv://Bishal:Bishal@bishal.dffybpx.mongodb.net/?retryWrites=true&w=majority&appName=Bishal>"
-       http_port: 5000
+       http_port: 5001
