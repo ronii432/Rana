@@ -24,13 +24,13 @@ if not TOKEN:
     raise ValueError("BOT_TOKEN environment variable not set!")
     
   # Configuration
-MONGO_DB_URL = os.getenv("MONGO_DB_URL")  # MongoDB URL environment variable se fetch karein
+MONGO_URL = os.getenv("MONGO_URL")  # MongoDB URL environment variable se fetch karein
 
-if not MONGO_DB_URL:
-    raise ValueError("MONGO_DB_URL environment variable not set!")
+if not MONGO_URL:
+    raise ValueError("MONGO_URL environment variable not set!")
   
     
- client = MongoClient(MONGO_DB_URI, tlsCAFile=certifi.where())
+client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
 db = client['zoya']
 users_collection = db.users
    
