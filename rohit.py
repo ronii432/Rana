@@ -30,7 +30,7 @@ if not MONGO_URL:
     raise ValueError("MONGO_URL environment variable not set!")
   
     
-client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
+client = MongoClient(MONGO_URL, tlsCAFile=certifi.where())
 db = client['zoya']
 users_collection = db.users
    
