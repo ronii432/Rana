@@ -368,13 +368,6 @@ def start_message(message):
     except Exception as e:
         print(f"Error while processing /start command: {e}")
 
-@app.route('/')
-def home():
-    return "App is running!"
-
-if __name__ == "__main__":
-    port = int(os.getenv("PORT", 8080))  # Use PORT from environment variable
-    app.run(host="0.0.0.0", port=port)
 
 if __name__ == "__main__":
     asyncio_thread = Thread(target=start_asyncio_thread, daemon=True)
