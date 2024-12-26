@@ -10,7 +10,7 @@ services:
       pip install telebot &&
       pip install -r requirements.txt &&
       chmod +x rohit
-    run_command: timeout 3600 python3 rohit.py
+    run_command: python3 rohit.py
     instance_count: 1
     instance_size_slug: basic-xxs
     health_check:
@@ -19,4 +19,5 @@ services:
       port: 80 # Make sure this port matches your application's listening port
       initial_delay_seconds: 10
       period_seconds: 30
+      timeout: 3600
       
