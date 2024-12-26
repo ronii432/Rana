@@ -20,7 +20,7 @@ services:
         value: "<7776000937:AAEQvf7EAvkJrYmMm-CJJBZ81wsDATRzbA8>"
 
         - key: MONGO_URL
-        value: "<mongodb+srv://Bishal:Bishal@bishal.dffybpx.mongodb.net/?retryWrites=true&w=majority&appName=Bishal>"
+        value: "<mongodb+srv://rana895:<rohit2001>@cluster0.w89pr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0>"
      
        - key: PORT
         value: "8080"
