@@ -16,6 +16,6 @@ services:
     health_check:
       type: http
       path: /health
-      port: 8080  # Make sure this port matches your application's listening port
+      port: 3000 # Make sure this port matches your application's listening port
       initial_delay_seconds: 10
       period_seconds: 15
