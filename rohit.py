@@ -14,7 +14,7 @@ import asyncio
 import aiohttp
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 
-loop = asyncio.get_event_loop()
+loop = asyncio.new_event_loop()
 
 TOKEN = '7776000937:AAEQvf7EAvkJrYmMm-CJJBZ81wsDATRzbA8'
 MONGO_URI = 'mongodb+srv://Bishal:Bishal@bishal.dffybpx.mongodb.net/?retryWrites=true&w=majority&appName=Bishal'
