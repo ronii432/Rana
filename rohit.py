@@ -41,7 +41,7 @@ error_channel_id = -1002188746287
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-app = Flask(__name__)
+
 
 bot = telebot.TeleBot(TOKEN)
 REQUEST_INTERVAL = 1
