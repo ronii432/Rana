@@ -39,7 +39,7 @@ FORWARD_CHANNEL_ID = -1002188746287
 CHANNEL_ID = -1002188746287
 error_channel_id = -1002188746287
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.info)
 
 
 
