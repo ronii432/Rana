@@ -15,20 +15,4 @@ services:
     python3 rohit.py
     instance_count: 1
     instance_size_slug: basic-xxs
-    envs:
-      - key: BOT_TOKEN
-        value: "<7776000937:AAEQvf7EAvkJrYmMm-CJJBZ81wsDATRzbA8>"
-
-        - key: MONGO_URL
-        value: "<mongodb+srv://rana:<rohit6688>@cluster0.w89pr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0>"
-     
-       - key: PORT
-        value: "8080"
-    http_port: 8080
-    routes:
-      - path: /
-        port: 8080
-    health_check:
-      protocol: HTTP
-      path: /
-      port: 8080
+    
