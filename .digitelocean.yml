@@ -4,14 +4,16 @@ services:
   - name: rohit-bot-service
     environment_slug: python
     source_dir: /
-    build_command: 
-      pip install --upgrade pip &&
-      pip install python-dotenv &&
-      pip install aiohttp &&
-      pip install telebot &&
-      pip install -r requirements.txt &&
-      chmod +x rohit
+    build_command: |
+      pip install -r requirements.txt
+      pip install --upgrade pip
     run_command: python rohit.py
     instance_count: 1
-    instance_size_slug: basic-xs  # Upgraded for better resources
-      timeout: 30            # Increased timeout duration
+    instance_size_slug: basic-xxs
+    health_check:
+      type: http
+      path: /health
+      port: 5000  # Ensure this matches your application's listening port
+      initial_delay_seconds: 5
+      period_seconds: 5
+      timeout: 3
