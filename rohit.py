@@ -2,8 +2,6 @@ import os
 import telebot
 import json
 import requests
-from dotenv import load_dotenv
-
 import logging
 import time
 from pymongo import MongoClient
@@ -16,13 +14,9 @@ import asyncio
 import aiohttp
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 
-load_dotenv()
-api_key = os.getenv("API_KEY")
-print(api_key)
-
 loop = asyncio.new_event_loop()
 
-TOKEN = '7776000937:AAEQvf7EAvkJrYmMm-CJJBZ81wsDATRzbA8'
+TOKEN = '7776000937:AAGWS2CNiNV9hxRCr7WAANh0fzeovvKyLgA
 MONGO_URI = 'mongodb+srv://Bishal:Bishal@bishal.dffybpx.mongodb.net/?retryWrites=true&w=majority&appName=Bishal'
 FORWARD_CHANNEL_ID = -1002188746287
 CHANNEL_ID = -1002188746287
