@@ -4,7 +4,7 @@ services:
   - name: rohit-bot-service
     environment_slug: python
     source_dir: /
-    build_command: >
+    build_command: pip install python-dotenv
       pip install --upgrade pip &&
       pip install aiohttp &&
       pip install telebot &&
