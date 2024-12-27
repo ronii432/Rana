@@ -17,7 +17,7 @@ services:
       type: http
       path: /health
       port: 80 # Make sure this port matches your application's listening port
-      initial_delay_seconds: 5
-      period_seconds: 10
+      initial_delay_seconds: 15
+      period_seconds: 30
       timeout: 3600
       
