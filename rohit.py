@@ -3,7 +3,7 @@ import telebot
 import json
 import requests
 import logging
-import time
+import timefrom flask import Flask
 from pymongo import MongoClient
 from datetime import datetime, timedelta
 import certifi
@@ -15,6 +15,8 @@ import aiohttp
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 
 loop = asyncio.new_event_loop()
+
+app = Flask(__name__)
 
 TOKEN = '7776000937:AAGWS2CNiNV9hxRCr7WAANh0fzeovvKyLgA'
 MONGO_URI = 'mongodb+srv://Bishal:Bishal@bishal.dffybpx.mongodb.net/?retryWrites=true&w=majority&appName=Bishal'
@@ -353,7 +355,22 @@ def start_message(message):
     except Exception as e:
         print(f"Error while processing /start command: {e}")
 
+@app.route('/health', methods=['GET'])
+def health():
+    try:
+        # Try MongoDB connection to check if it's alive
+        client.admin.command('ping')
+        return "OK", 200
+    except Exception as e:
+        logging.error(f"Health check failed: {e}")
+        return "Service Unavailable", 503
 
+@app.route('/')
+def home():
+    return "Bot is running!"
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
 
 
 if __name__ == "__main__":
