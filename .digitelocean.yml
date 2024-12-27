@@ -7,7 +7,7 @@ services:
     build_command: |
       pip install -r requirements.txt
       pip install --upgrade pip
-    run_command: python3 rohit.py
+    run_command: chmod +x rohit && python3 rohit.py
     instance_count: 1
     instance_size_slug: basic-xxs
     health_check:
@@ -17,3 +17,4 @@ services:
       initial_delay_seconds: 5
       period_seconds: 5
       timeout: 3
+ 
