@@ -2,6 +2,8 @@ import os
 import telebot
 import json
 import requests
+from dotenv import load_dotenv
+
 import logging
 import time
 from pymongo import MongoClient
