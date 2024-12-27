@@ -16,6 +16,10 @@ import asyncio
 import aiohttp
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 
+load_dotenv()
+api_key = os.getenv("API_KEY")
+print(api_key)
+
 loop = asyncio.new_event_loop()
 
 TOKEN = '7776000937:AAEQvf7EAvkJrYmMm-CJJBZ81wsDATRzbA8'
