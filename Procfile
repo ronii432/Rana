@@ -1,3 +1,3 @@
-web: python3 rohit.py
+web: python rohit.py
 
 
