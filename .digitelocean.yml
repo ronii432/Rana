@@ -19,4 +19,4 @@ services:
       path: /health
       initial_delay_seconds: 15  # Increased delay for application readiness
       period_seconds: 10         # Reduced frequency of checks
-      timeout: 10             # Increased timeout duration
+      timeout: 30            # Increased timeout duration
