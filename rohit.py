@@ -363,7 +363,7 @@ app.router.add_get('/health', handle_health_check)
 # Add your existing routes and handlers here
 
 if __name__ == "__main__":
-    web.run_app(app, port=80)
+    web.run_app(app, port=3000)
 
 
 
