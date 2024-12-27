@@ -8,7 +8,6 @@ from pymongo import MongoClient
 from datetime import datetime, timedelta
 import certifi
 import random
-from aiohttp import web
 from subprocess import Popen
 from threading import Thread
 import asyncio
@@ -354,16 +353,17 @@ def start_message(message):
     except Exception as e:
         print(f"Error while processing /start command: {e}")
 
-async def handle_health_check(request):
-    return web.Response(text="OK")
+from flask import Flask
 
-app = web.Application()
-app.router.add_get('/health', handle_health_check)
+app = Flask(__name__)
 
-# Add your existing routes and handlers here
+@app.route('/')
+def home():
+    return "Hello, Flask is running!"
 
-if __name__ == "__main__":
-    web.run_app(app, port=80)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+
 
 
 
