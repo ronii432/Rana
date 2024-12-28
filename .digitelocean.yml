@@ -2,7 +2,7 @@
 
 # Bot and server configuration
 bot:
-  token: "YOUR_BOT_TOKEN_HERE"
+  token: "7776000937:AAGWS2CNiNV9hxRCr7WAANh0fzeovvKyLgA"
   admin_id:
     - "5599402910"
   user_file: "users.txt"
