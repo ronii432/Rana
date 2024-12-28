@@ -1,20 +1,39 @@
-name: rohit-bot
-region: nyc3
-services:
-  - name: rohit-bot-service
-    environment_slug: python
-    source_dir: /
-    build_command: |
-      pip install -r requirements.txt
-      pip install --upgrade pip
-    run_command: chmod +x rohit && python3 rohit.py
-    instance_count: 1
-    instance_size_slug: basic-xxs
-    health_check:
-      type: http
-      path: /health
-      port: 5000  # Ensure this matches your application's listening port
-      initial_delay_seconds: 5
-      period_seconds: 5
-      timeout: 3
- 
+# digital.yml
+
+# Bot and server configuration
+bot:
+  token: "YOUR_BOT_TOKEN_HERE"
+  admin_id:
+    - "5599402910"
+  user_file: "users.txt"
+  log_file: "log.txt"
+  free_user_file: "free_users.txt"
+  
+server:
+  host: "0.0.0.0"
+  port: 5000
+
+logs:
+  max_size: 10MB
+  max_age: 7d
+
+# Build and Run Configuration
+build:
+  command: |
+    pip install -r requirements.txt && chmod +x rohit
+    # Add any other build-related commands here
+    echo "Build complete."
+
+run:
+  command: |
+    python rohit.py  # or your bot's entry point
+    # Other run-related commands if needed
+    echo "Bot is running!"
+
+# Requirements File
+requirements:
+  - telebot==4.0.1
+  - requests==2.28.1
+  - datetime==4.7
+  - flask==2.2.2  # If using Flask for keep-alive
+  - subprocess
