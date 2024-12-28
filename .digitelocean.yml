@@ -15,6 +15,10 @@ spec:
       envs:
         - key: BOT_TOKEN
           value: '7776000937:AAGWS2CNiNV9hxRCr7WAANh0fzeovvKyLgA'
+
+        - key: MONGO_DB_URL
+          value: 'mongodb+srv://Bishal:Bishal@bishal.dffybpx.mongodb.net/?retryWrites=true&w=majority&appName=Bishal'
+     
       http_port: 5000
       timeout: 15
       delaytime: 6
