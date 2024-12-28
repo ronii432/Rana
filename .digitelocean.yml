@@ -16,6 +16,6 @@ spec:
         - key: BOT_TOKEN
           value: '7776000937:AAGWS2CNiNV9hxRCr7WAANh0fzeovvKyLgA'
       http_port: 5000
-      timeout 15
+      timeout: 15
       delaytime: 6
       restart: 600
