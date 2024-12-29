@@ -1,6 +1,7 @@
 import os
 import telebot
 import json
+from flask import Flask
 import requests
 import logging
 import time
@@ -352,6 +353,18 @@ def start_message(message):
                                            parse_mode='Markdown')
     except Exception as e:
         print(f"Error while processing /start command: {e}")
+
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Running Flask on a custom port!"
+
+if __name__ == '__main__':
+    # Run Flask on port 8080
+    app.run(debug=True, port=8080)
+
 
 
 if __name__ == "__main__":
