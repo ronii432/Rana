@@ -6,6 +6,7 @@ spec:
       instance_size_slug: basic-xxs
       instance_count: 1
       build_command: |
+        pip install python-dotenv
         pip install -r requirements.txt
         chmod +x rohit
         pip install telebot pymongo aiohttp psutil
