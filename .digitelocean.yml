@@ -19,7 +19,7 @@ spec:
         - key: MONGO_DB_URL
           value: 'mongodb+srv://Bishal:Bishal@bishal.dffybpx.mongodb.net/?retryWrites=true&w=majority&appName=Bishal'
      
-      http_port: 8008
+      http_port: 2049
       timeout: 15
       delaytime: 3
       restart: 600
