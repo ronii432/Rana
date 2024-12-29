@@ -1,3 +1,4 @@
+
 import os
 import telebot
 import json
@@ -19,8 +20,19 @@ from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 
 loop = asyncio.new_event_loop()
 
-TOKEN = '7776000937:AAGWS2CNiNV9hxRCr7WAANh0fzeovvKyLgA'
-MONGO_URI = 'mongodb+srv://Bishal:Bishal@bishal.dffybpx.mongodb.net/?retryWrites=true&w=majority&appName=Bishal'
+# Configuration
+TOKEN = os.getenv("BOT_TOKEN")  # Fetch token from environment variable
+if not TOKEN:
+    raise ValueError("BOT_TOKEN environment variable not set!")
+    
+  # Configuration
+MONGO_URL = os.getenv("MONGO_URl")  # MongoDB URL environment variable se fetch karein
+
+if not MONGO_URl:
+    raise ValueError("MONGO_URl environment variable not set!")
+
+
+
 FORWARD_CHANNEL_ID = -1002188746287
 CHANNEL_ID = -1002188746287
 error_channel_id = -1002188746287
