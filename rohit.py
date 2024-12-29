@@ -24,13 +24,11 @@ loop = asyncio.new_event_loop()
 TOKEN = os.getenv("BOT_TOKEN")  # Fetch token from environment variable
 if not TOKEN:
     raise ValueError("BOT_TOKEN environment variable not set!")
-    
-  # Configuration
-MONGO_URL = os.getenv("MONGO_URL")  # MongoDB URL environment variable se fetch karein
 
-if not MONGO_URl:
+# Configuration
+MONGO_URL = os.getenv("MONGO_URL")  # Fetch MongoDB URL from environment variable
+if not MONGO_URL:
     raise ValueError("MONGO_URL environment variable not set!")
-
 
 
 FORWARD_CHANNEL_ID = -1002188746287
