@@ -4,6 +4,8 @@ import json
 from flask import Flask
 import requests
 import logging
+from flask import Flask
+import socket
 import time
 from pymongo import MongoClient
 from datetime import datetime, timedelta
@@ -355,15 +357,18 @@ def start_message(message):
         print(f"Error while processing /start command: {e}")
 
 
-app = Flask(__name__)
+if __name__ == "__main__":
 
-@app.route('/')
-def home():
-    return "Running Flask on a custom port!"
+    app = Flask(__name__)
 
-if __name__ == '__main__':
-    # Run Flask on port 8080
-    app.run(debug=True, port=8080)
+    # Find a free port dynamically
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("", 0))
+        port = s.getsockname()[1]
+
+    app.run(host="0.0.0.0", port=port, debug=True)
+    print(f"Running on port {port}")
+
 
 
 
