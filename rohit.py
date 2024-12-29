@@ -26,7 +26,7 @@ if not TOKEN:
     raise ValueError("BOT_TOKEN environment variable not set!")
     
   # Configuration
-MONGO_URL = os.getenv("MONGO_URL")  # MongoDB URL environment variable se fetch karein
+MONGO_URl = os.getenv("MONGO_URL")  # MongoDB URL environment variable se fetch karein
 
 if not MONGO_URL:
     raise ValueError("MONGO_URL environment variable not set!")
