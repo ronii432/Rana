@@ -28,7 +28,7 @@ if not TOKEN:
   # Configuration
 MONGO_URL = os.getenv("MONGO_URl")  # MongoDB URL environment variable se fetch karein
 
-if not MONGO_URl:
+if not MONGO_URL:
     raise ValueError("MONGO_URl environment variable not set!")
 
 
