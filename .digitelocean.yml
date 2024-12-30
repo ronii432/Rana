@@ -23,4 +23,4 @@ spec:
       http_port: 443
       timeout: 30
       delaytime: 6
-      restart: 600
+    
